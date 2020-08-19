@@ -9,7 +9,12 @@
   "scripts": {
     "lint": "eslint ./src",
     "test": "mocha tests",
+    "coverage": "nyc --reporter=text npm run test",
     "start": "node index.js"
+  },
+  "nyc": {
+    "include": "src",
+    "exclude": "specs"
   },
   "keywords": [
     "Xendit"
@@ -23,7 +28,15 @@
   },
   "devDependencies": {
     "eslint": "^7.7.0",
+    "husky": "^4.2.5",
     "mocha": "^6.1.4",
+    "nyc": "^15.1.0",
     "supertest": "^4.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
   }
 }
