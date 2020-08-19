@@ -42,9 +42,8 @@ describe('API tests', () => {
                 .get('/rides')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res) {
+                .end(function(err) {
                     if (err) return done(err);
-                    console.log('return', JSON.stringify(res));
                     done();
                 });
         });
@@ -58,9 +57,8 @@ describe('API tests', () => {
                 .get('/rides/1')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res) {
+                .end(function(err) {
                     if (err) return done(err);
-                    console.log('return', JSON.stringify(res));
                     done();
                 });
         });
@@ -223,16 +221,15 @@ describe('API tests', () => {
     /* END POST rides */
 
 
-      /* BEGIN GET rides */
-      describe('GET /rides', () => {
-        it('should return rides', (done) => {
+    /* BEGIN GET rides */
+    describe('GET /rides', () => {
+        it('should r eturn rides', (done) => {
             request(app)
                 .get('/rides')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res) {
+                .end(function(err) {
                     if (err) return done(err);
-                    console.log('return', JSON.stringify(res));
                     done();
                 });
         });
@@ -246,9 +243,8 @@ describe('API tests', () => {
                 .get('/rides/1')
                 .expect('Content-Type', /json/)
                 .expect(200)
-                .end(function(err, res) {
+                .end(function(err) {
                     if (err) return done(err);
-                    console.log('return', JSON.stringify(res));
                     done();
                 });
         });
