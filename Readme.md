@@ -1,6 +1,5 @@
 # MASTER RIDER PROJECT
-
-Master rider project. This project is created with node js and with Unit testing, documentation, toolling, security and load testing.
+The project rider master is the rider master API, with an API that makes it easy for a developer to build a custom Rider app for any platform. This project is made with node js and is equipped with Unit testing, documentation, toolling, security and load testing.
 
 ## Setup
 1. Clone repository in your own github profile named `backend-coding-test`
