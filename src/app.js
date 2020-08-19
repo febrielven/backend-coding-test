@@ -18,14 +18,22 @@ module.exports = (db) => {
         const driverName = req.body.driver_name;
         const driverVehicle = req.body.driver_vehicle;
 
-        if (startLatitude < -90 || startLatitude > 90 || startLongitude < -180 || startLongitude > 180) {
+        if (startLatitude < -90 || 
+            startLatitude > 90 || 
+            startLongitude < -180 || 
+            startLongitude > 180
+        ) {
             return res.send({
                 error_code: 'VALIDATION_ERROR',
                 message: 'Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
             });
         }
 
-        if (endLatitude < -90 || endLatitude > 90 || endLongitude < -180 || endLongitude > 180) {
+        if (endLatitude < -90 || 
+            endLatitude > 90 || 
+            endLongitude < -180 || 
+            endLongitude > 180
+        ) {
             return res.send({
                 error_code: 'VALIDATION_ERROR',
                 message: 'End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively'
@@ -53,9 +61,17 @@ module.exports = (db) => {
             });
         }
 
-        var values = [req.body.start_lat, req.body.start_long, req.body.end_lat, req.body.end_long, req.body.rider_name, req.body.driver_name, req.body.driver_vehicle];
+        var values = [
+            req.body.start_lat, 
+            req.body.start_long, 
+            req.body.end_lat, 
+            req.body.end_long, 
+            req.body.rider_name, 
+            req.body.driver_name, 
+            req.body.driver_vehicle
+        ];
         
-        const result = db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', values, function (err) {
+        db.run('INSERT INTO Rides(startLat, startLong, endLat, endLong, riderName, driverName, driverVehicle) VALUES (?, ?, ?, ?, ?, ?, ?)', values, function (err) {
             if (err) {
                 return res.send({
                     error_code: 'SERVER_ERROR',
