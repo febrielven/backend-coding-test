@@ -26,7 +26,7 @@ These instructions will get you a copy of the project up and running on your loc
 ## Its  Project / API features are:
 1. [GET Health](#get-health)
 1. [POST Rides](#post-rides)
-2. [GET Rides List](#get-rides-list)
+2. [GET Rides with Pagination](#get-rides-list)
 3. [Get Rides by ID](#get-rides-by-id)
 
 ## Here is the API documentation:
@@ -48,9 +48,9 @@ These instructions will get you a copy of the project up and running on your loc
    ##### HEADERS
     Content-Type: application/json
 
-   ##### PATH Parameter
+   ##### Parameter
    - **start_lat** `integer`  `required`
-   - end_lat `integer`  `required`
+   - **end_lat** `integer`  `required`
    - **start_long** `integer`  `required`
    - **end_long** `integer`  `required`
    - **rider_name** `string`  `required`
@@ -84,9 +84,14 @@ These instructions will get you a copy of the project up and running on your loc
     }
 
 
-### GET Rides
+### GET Rides with Pagination
    ##### GET /rides
-    example `http://localhost:8010/rides`
+    example `http://localhost:8010/rides?start_num=0&limit_num=5`
+
+   ##### Parameter
+   - **start_num** `integer`  `required`
+   - **limit_num** `integer`  `required`
+
    ##### HEADERS
     Content-Type: application/json
   
@@ -101,11 +106,55 @@ These instructions will get you a copy of the project up and running on your loc
             "startLong": 1,
             "endLat": 90,
             "endLong": 180,
-            "riderName": "FEBRI",
-            "driverName": "Acuy",
-            "driverVehicle": "Yaris",
-            "created": "2020-08-19 03:22:14"
-        }
+            "riderName": "Pras Teguh",
+            "driverName": "Irwana",
+            "driverVehicle": "Innova",
+            "created": "2020-08-20 03:22:14"
+            },
+            {
+            "rideID": 2,
+            "startLat": 10,
+            "startLong": 20,
+            "endLat": 40,
+            "endLong": 100,
+            "riderName": "Rizky",
+            "driverName": "Danang",
+            "driverVehicle": "Jazz",
+            "created": "2020-08-20 03:22:14"
+            },
+            {
+            "rideID": 3,
+            "startLat": 5,
+            "startLong": 10,
+            "endLat": 50,
+            "endLong": 90,
+            "riderName": "Jamilla",
+            "driverName": "Bosna",
+            "driverVehicle": "Expander",
+            "created": "2020-08-21 03:22:14"
+            },
+            {
+            "rideID": 4,
+            "startLat": 15,
+            "startLong": 25,
+            "endLat": 60,
+            "endLong": 120,
+            "riderName": "Zaky",
+            "driverName": "Danu",
+            "driverVehicle": "Fortuner",
+            "created": "2020-08-22 03:22:14"
+            },
+            {
+            "rideID": 5,
+            "startLat": 13,
+            "startLong": 20,
+            "endLat": 80,
+            "endLong": 110,
+            "riderName": "Rizal",
+            "driverName": "Herman",
+            "driverVehicle": "Innova",
+            "created": "2020-08-23 03:22:14"
+            }
     ]
 
 ### GET Rides by ID
