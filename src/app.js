@@ -92,8 +92,32 @@ module.exports = (db) => {
         });
     });
 
-    app.get('/rides', (req, res) => {
+    app.get('/rides-all', (req, res) => {
+
         db.all('SELECT * FROM Rides', function (err, rows) {
+            if (err) {
+                return res.send({
+                    error_code: 'SERVER_ERROR',
+                    message: 'Unknown error'
+                });
+            }
+
+            if (rows.length === 0) {
+                return res.send({
+                    error_code: 'RIDES_NOT_FOUND_ERROR',
+                    message: 'Could not find any rides'
+                });
+            }
+
+            res.send(rows);
+        });
+    });
+
+    app.get('/rides', (req, res) => {
+
+        var startNum =  Number(req.query.start_num) || 0;
+        var limitNum = Number(req.query.limit_num) || 10;
+        db.all('SELECT * FROM Rides LIMIT ? OFFSET ?',limitNum,startNum, function (err, rows) {
             if (err) {
                 return res.send({
                     error_code: 'SERVER_ERROR',
