@@ -26,7 +26,7 @@ These instructions will get you a copy of the project up and running on your loc
 ## Its  Project / API features are:
 1. [GET Health](#get-health)
 1. [POST Rides](#post-rides)
-2. [GET Rides with Pagination](#get-rides-list)
+2. [GET Rides with Pagination](#get-rides-with-pagination)
 3. [Get Rides by ID](#get-rides-by-id)
 
 ## Here is the API documentation:
