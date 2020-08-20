@@ -217,15 +217,35 @@ describe('API tests', () => {
                 });
             done();
         });
+
+        obj.start_lat= 50,
+        obj.end_lat=90,
+        obj.start_long=50,
+        obj.end_long=180,
+        obj.rider_name='Febrianto';
+        obj.driver_name='Acuy';
+        obj.driver_vehicle='Yaris';
+
+        it('should return SUCCESS - rides with redirect on post', function(done) {
+            request(app)
+                .post('/rides')
+                .send(obj)
+                .expect(200)
+                .expect('Content-Type', /json/)
+                .end(function(err) {
+                    if (err) done(err);
+                });
+            done();
+        });
     });
     /* END POST rides */
 
 
-    /* BEGIN GET rides */
-    describe('GET /rides', () => {
-        it('should r eturn rides', (done) => {
+    /* BEGIN GET rides by pagination*/
+    describe('GET /rides start_num=0&limit_num=5', () => {
+        it('should return rides with pagination', (done) => {
             request(app)
-                .get('/rides')
+                .get('/rides?start_num=0&limit_num=5')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end(function(err) {
@@ -238,7 +258,7 @@ describe('API tests', () => {
 
     /* BEGIN GET rides */
     describe('GET /rides/:id', () => {
-        it('should return rides', (done) => {
+        it('should return rides by id', (done) => {
             request(app)
                 .get('/rides/1')
                 .expect('Content-Type', /json/)
