@@ -1,5 +1,5 @@
 const winston = require('winston');
-module.exports.logger =  winston.createLogger({
+module.exports =  winston.createLogger({
     transports: [
         new winston.transports.File({
             level: 'info',
