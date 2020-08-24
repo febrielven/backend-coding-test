@@ -1,30 +1,36 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 'use strict';
-
 const request = require('supertest');
-
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database(':memory:');
-
-const app = require('../src/app')(db);
-const buildSchemas = require('../src/schemas');
 const { json } = require('body-parser');
+const app = require('../src/app')(db);
+const buildSchemas = require('../db/schemas');
+const dummy = require('../db/dummy');
 
 describe('API tests', () => {
 
+    /**
+     * @description test connect db & create Rides 
+     */
     before((done) => {
         db.serialize((err) => { 
             if (err) {
                 return done(err);
             }
-
             buildSchemas(db);
 
             done();
         });
     });
-    /* BEGIN GET health */
+
+    /**
+     * @description test api GET health 
+     * @method GET /health
+     * @type {Text} Content-Type
+     * @response status 200 OK
+     */
     describe('GET /health', () => {
         it('should return health', (done) => {
             request(app)
@@ -33,49 +39,71 @@ describe('API tests', () => {
                 .expect(200, done);
         });
     });
-    /* END GET health */
 
-    /* BEGIN GET rides */
+    /**
+     * @description test api GET rides  
+     * @method GET /health
+     * @type {JSON} Content-Type
+     * @response status 422 Unprocessable Entity
+     */
     describe('GET /rides', () => {
-        it('should return rides', (done) => {
+        it('should return Unprocessable Entity - RIDES_NOT_FOUND_ERROR', (done) => {
             request(app)
                 .get('/rides')
                 .expect('Content-Type', /json/)
-                .expect(200)
+                .expect(422)
                 .end(function(err) {
                     if (err) return done(err);
                     done();
                 });
         });
     });
-    /* END GET rides */
 
-    /* BEGIN GET rides */
+    /**
+     * @description test api GET rides by rides id
+     * @method GET /health
+     * @type {JSON} Content-Type
+     * @response status 422 Unprocessable Entity
+     */
     describe('GET /rides/:id', () => {
-        it('should return rides', (done) => {
+        it('should return Unprocessable Entity - RIDES_NOT_FOUND_ERROR', (done) => {
             request(app)
                 .get('/rides/1')
                 .expect('Content-Type', /json/)
-                .expect(200)
+                .expect(422)
                 .end(function(err) {
                     if (err) return done(err);
                     done();
                 });
         });
     });
-    /* END GET rides */
+ 
 
-
-    /* BEGIN POST rides */
+    /**
+     * @description test api post rides
+     * @param {Object{}} data The list of rides Object
+     * @param {integer} data[].start_lat The start latitude
+     * @param {integer} data[].start_long The start longitude
+     * @param {integer} data[].end_lat The end latitude
+     * @param {integer} data[].end_long The end longitude
+     * @param {string}  data[].rider_name The rider name
+     * @param {string}  data[].driver_name The driver name
+     * @param {string}  data[].driver_vehicle The vehicle type
+     * @method POST /health
+     * @type {JSON} Content-Type
+     * @response status 422 Unprocessable Entity
+     * @response status 422 Unprocessable Entity
+     * @response status 200 OK
+     */
     describe('POST /rides', ()=>{
-        //Object Empty
-        var obj= {};
 
-        it('should return VALIDATION_ERROR - Object Empty', function(done) {
+        //Object Empty
+        let data1 = {};
+        it('should return Unprocessable Entity - (VALIDATION_ERROR Object Empty)', function(done) {
             request(app)
                 .post('/rides')
-                .send(obj)
-                .expect(200)
+                .send(data1)
+                .expect(422)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
                     if (err) done(err);
@@ -84,19 +112,14 @@ describe('API tests', () => {
         });
 
         //Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively
-        obj.start_lat= -100,
-        obj.end_lat=90,
-        obj.start_long=-190,
-        obj.end_long=180,
-        obj.rider_name='Febrianto';
-        obj.driver_name='Acuy';
-        obj.driver_vehicle='Yaris';
-
-        it('should return VALIDATION_ERROR - Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively', function(done) {
+        let data2 = dummy.data(1)[0];
+        data2.start_lat= -100,
+        data2.start_long=-190,
+        it('should return Unprocessable Entity - VALIDATION_ERROR (Start latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively)', function(done) {
             request(app)
                 .post('/rides')
-                .send(obj)
-                .expect(200)
+                .send(data2)
+                .expect(422)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
                     if (err) done(err);
@@ -107,19 +130,14 @@ describe('API tests', () => {
 
        
         //End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively
-        obj.start_lat= 50,
-        obj.end_lat=-100,
-        obj.start_long=50,
-        obj.end_long=-190,
-        obj.rider_name='Febrianto';
-        obj.driver_name='Acuy';
-        obj.driver_vehicle='Yaris';
-
-        it('should return VALIDATION_ERROR - End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively', function(done) {
+        let data3 = dummy.data(1)[0];
+        data3.end_lat=-100,
+        data3.end_long=-190,
+        it('should return Unprocessable Entity - VALIDATION_ERROR (End latitude and longitude must be between -90 - 90 and -180 to 180 degrees respectively)', function(done) {
             request(app)
                 .post('/rides')
-                .send(obj)
-                .expect(200)
+                .send(data3)
+                .expect(422)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
                     if (err) done(err);
@@ -129,19 +147,13 @@ describe('API tests', () => {
 
 
         //Rider name must be a non empty string
-        obj.start_lat= -100,
-        obj.end_lat=90,
-        obj.start_long=-190,
-        obj.end_long=180,
-        obj.rider_name=1;
-        obj.driver_name='Acuy';
-        obj.driver_vehicle='Yaris';
- 
-        it('should return VALIDATION_ERROR - Rider name must be a non empty string', function(done) {
+        let data4 = dummy.data(1)[0];
+        data4.rider_name=1;
+        it('should return Unprocessable Entity - VALIDATION_ERROR (Rider name must be a non empty string)', function(done) {
             request(app)
                 .post('/rides')
-                .send(obj)
-                .expect(200)
+                .send(data4)
+                .expect(422)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
                     if (err) done(err);
@@ -152,19 +164,13 @@ describe('API tests', () => {
 
 
         //Driver name must be a non empty string
-        obj.start_lat= -100,
-        obj.end_lat=90,
-        obj.start_long=-190,
-        obj.end_long=180,
-        obj.rider_name='Febrianto';
-        obj.driver_name=100;
-        obj.driver_vehicle='Yaris';
- 
-        it('should return VALIDATION_ERROR - Driver name must be a non empty string', function(done) {
+        let data5 = dummy.data(1)[0];
+        data5.driver_name=100;
+        it('should return Unprocessable Entity - VALIDATION_ERROR (Driver name must be a non empty string)', function(done) {
             request(app)
                 .post('/rides')
-                .send(obj)
-                .expect(200)
+                .send(data5)
+                .expect(422)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
                     if (err) done(err);
@@ -174,19 +180,13 @@ describe('API tests', () => {
         });
 
         //Driver vehicle must be a non empty string
-        obj.start_lat= -100,
-        obj.end_lat=90,
-        obj.start_long=-190,
-        obj.end_long=180,
-        obj.rider_name='Febrianto';
-        obj.driver_name='Acuy';
-        obj.driver_vehicle=100;
-    
-        it('should return VALIDATION_ERROR - Driver vehicle must be a non empty string', function(done) {
+        let data6 = dummy.data(1)[0];
+        data6.driver_vehicle=100;
+        it('should return Unprocessable Entity - VALIDATION_ERROR (Driver vehicle must be a non empty string)', function(done) {
             request(app)
                 .post('/rides')
-                .send(obj)
-                .expect(200)
+                .send(data6)
+                .expect(422)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
                     if (err) done(err);
@@ -195,41 +195,13 @@ describe('API tests', () => {
             done();
         });
 
-        
-
-        //OBJECT Completed
-        obj.start_lat= 50,
-        obj.end_lat=90,
-        obj.start_long=50,
-        obj.end_long=180,
-        obj.rider_name='Febrianto';
-        obj.driver_name='Acuy';
-        obj.driver_vehicle='Yaris';
-
-        it('should return SUCCESS - rides with redirect on post', function(done) {
+    
+        //Data Completed
+        let data7 = dummy.data(1)[0];
+        it('should return OK - rides with redirect on post', function(done) {
             request(app)
                 .post('/rides')
-                .send(obj)
-                .expect(200)
-                .expect('Content-Type', /json/)
-                .end(function(err) {
-                    if (err) done(err);
-                });
-            done();
-        });
-
-        obj.start_lat= 50,
-        obj.end_lat=90,
-        obj.start_long=50,
-        obj.end_long=180,
-        obj.rider_name='Febrianto';
-        obj.driver_name='Acuy';
-        obj.driver_vehicle='Yaris';
-
-        it('should return SUCCESS - rides with redirect on post', function(done) {
-            request(app)
-                .post('/rides')
-                .send(obj)
+                .send(data7)
                 .expect(200)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
@@ -238,14 +210,20 @@ describe('API tests', () => {
             done();
         });
     });
-    /* END POST rides */
 
 
-    /* BEGIN GET rides by pagination*/
-    describe('GET /rides start_num=0&limit_num=5', () => {
-        it('should return rides with pagination', (done) => {
+    /**
+     * @description test api GET rides
+     * @param {integer} page of pagination
+     * @param {integer} limit of pagination
+     * @method GET /rides
+     * @type {JSON} Content-Type
+     * @response status 200 OK
+     */
+    describe('GET /rides with pagination', () => {
+        it('should return OK - list rides', (done) => {
             request(app)
-                .get('/rides?start_num=0&limit_num=5')
+                .get('/rides?page=1&limit=5')
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .end(function(err) {
@@ -254,11 +232,14 @@ describe('API tests', () => {
                 });
         });
     });
-    /* END GET rides */
+   
 
-    /* BEGIN GET rides */
+    /**
+     * @description test api GET rides/:id  
+     * @response status 200 OK
+     */
     describe('GET /rides/:id', () => {
-        it('should return rides by id', (done) => {
+        it('should return OK - list one rides', (done) => {
             request(app)
                 .get('/rides/1')
                 .expect('Content-Type', /json/)
