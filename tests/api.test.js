@@ -44,14 +44,14 @@ describe('API tests', () => {
      * @description test api GET rides  
      * @method GET /health
      * @type {JSON} Content-Type
-     * @response status 422 Unprocessable Entity
+     * @response status 400 BAD REQUEST
      */
     describe('GET /rides', () => {
-        it('should return Unprocessable Entity - RIDES_NOT_FOUND_ERROR', (done) => {
+        it('should return BAD REQUEST - RIDES_NOT_FOUND_ERROR', (done) => {
             request(app)
                 .get('/rides')
                 .expect('Content-Type', /json/)
-                .expect(422)
+                .expect(400)
                 .end(function(err) {
                     if (err) return done(err);
                     done();
@@ -63,14 +63,14 @@ describe('API tests', () => {
      * @description test api GET rides by rides id
      * @method GET /health
      * @type {JSON} Content-Type
-     * @response status 422 Unprocessable Entity
+     * @response status 400 BAD REQUEST
      */
     describe('GET /rides/:id', () => {
-        it('should return Unprocessable Entity - RIDES_NOT_FOUND_ERROR', (done) => {
+        it('should return BAD REQUEST - RIDES_NOT_FOUND_ERROR', (done) => {
             request(app)
-                .get('/rides/1')
+                .get('/rides/100')
                 .expect('Content-Type', /json/)
-                .expect(422)
+                .expect(400)
                 .end(function(err) {
                     if (err) return done(err);
                     done();
@@ -93,7 +93,7 @@ describe('API tests', () => {
      * @type {JSON} Content-Type
      * @response status 422 Unprocessable Entity
      * @response status 422 Unprocessable Entity
-     * @response status 200 OK
+     * @response status 201 Created
      */
     describe('POST /rides', ()=>{
 
@@ -198,11 +198,11 @@ describe('API tests', () => {
     
         //Data Completed
         let data7 = dummy.data(1)[0];
-        it('should return OK - rides with redirect on post', function(done) {
+        it('should return Created - rides with redirect on post', function(done) {
             request(app)
                 .post('/rides')
                 .send(data7)
-                .expect(200)
+                .expect(201)
                 .expect('Content-Type', /json/)
                 .end(function(err) {
                     if (err) done(err);
