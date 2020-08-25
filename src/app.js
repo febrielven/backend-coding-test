@@ -33,7 +33,7 @@ module.exports = (db) => {
      * @method POST /rides
      * @respose status 422 Unprocessable Entity @returns {Object} return VALIDATION_ERROR
      * @respose status 500 Internal Server Error @returns {object} return SERVER_ERROR
-     * @respose status 200 OK @returns {Array} return list rides
+     * @respose status 201 Created @returns {Array} return list rides
      */
     app.post('/rides',
         jsonParser,
@@ -61,14 +61,12 @@ module.exports = (db) => {
                 let rows = await models.save(args, db);
                 rows = await models.findByID(rows.lastID, db);
                 if (rows.length === 0) {
-                    return res.status(422).send(
+                    return res.status(400).send(
                         handleError('RIDES_NOT_FOUND_ERROR',errorMsg.errRides)
                     );
                 }
 
-                res.send(rows);
-
-        
+                res.status(201).json(rows);
             } catch (err)  {
                 log.error(err);
                 return res.status(500).send(
@@ -84,7 +82,7 @@ module.exports = (db) => {
      * @param {integer} req.query.page of pagination
      * @param {integer} req.query.limit of pagination
      * @method GET /rides
-     * @respose status 422 Unprocessable Entity @returns {Object} return VALIDATION_ERROR
+     * @respose status BAD REQUEST @returns {Object} return VALIDATION_ERROR
      * @respose status 500 Internal Server Error @returns {object} return SERVER_ERROR
      * @respose status 200 OK @returns {Array} return list rides
      */
@@ -102,7 +100,7 @@ module.exports = (db) => {
         try {
             const rows = await models.getAll(skip,limit, db);
             if (rows.length === 0) {
-                return res.status(422).send(
+                return res.status(400).send(
                     handleError('RIDES_NOT_FOUND_ERROR',errorMsg.errRides)
                 );
             }
@@ -123,7 +121,7 @@ module.exports = (db) => {
      * @param {Object{}} req.params The Rides object
      * @param {integer} req.query.id of rides object
      * @method GET /rides/:id
-     * @respose status 422 Unprocessable Entity @returns {Object} return VALIDATION_ERROR
+     * @respose status 400 BAD REQUEST @returns {Object} return VALIDATION_ERROR
      * @respose status 500 Internal Server Error @returns {object} return SERVER_ERROR
      * @respose status 200 OK @returns {Array} return list rides
      */
@@ -132,7 +130,7 @@ module.exports = (db) => {
         try {
             const rows = await models.findByID(rideID, db);
             if (rows.length === 0) {
-                return res.status(422).send(
+                return res.status(400).send(
                     handleError('RIDES_NOT_FOUND_ERROR',errorMsg.errRides)
                 );
             }
