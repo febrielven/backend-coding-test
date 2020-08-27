@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint ./src",
     "test": "mocha tests",
+    "test:load": "artillery run artillery.yml",
     "coverage": "nyc --reporter=text npm run test",
     "start": "node index.js"
   },
@@ -22,6 +23,7 @@
   "author": "Bo",
   "license": "ISC",
   "dependencies": {
+    "artillery": "^1.6.1",
     "body-parser": "^1.19.0",
     "eslint-plugin-promise": "^4.2.1",
     "express": "^4.16.4",

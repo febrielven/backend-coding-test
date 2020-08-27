@@ -58,3 +58,18 @@ module.exports.data = (count) => {
     }
     return data;
 };
+
+
+module.exports.dummyTest = (userContext, events, done) => {
+    userContext.vars.page = 1;
+    userContext.vars.limit = 5;
+    userContext.vars.start_lat = randomNumber.random(-90, 90);
+    userContext.vars.start_long = randomNumber.random(-180, 180);
+    userContext.vars.end_lat = randomNumber.random(-90, 90);
+    userContext.vars.end_long = randomNumber.random(-180, 180);
+    userContext.vars.rider_name =  name[randomNumber.random(0, name.length)];
+    userContext.vars.driver_name = name[randomNumber.random(0, name.length)];
+    userContext.vars.driver_vehicle = driverVehicle[randomNumber.random(0, driverVehicle.length)];
+
+    return done();
+};

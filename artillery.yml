@@ -1,0 +1,40 @@
+config:
+    target: 'http://localhost:8010'
+    # http: 
+    #   timeout: 10 # Responses have to be sent within 10 seconds or the request will be aborted
+    phases:
+      # Create 100 virtual users every second for 60 seconds
+      - duration: 60 # seconds
+        arrivalRate: 100 # seconds
+        name: "Load test - api rides - arrival rate"
+    processor: "./db/dummy.js"
+scenarios:
+    - flow:
+        - get:
+            url: "/health"
+            expect:
+                - statusCode: 200
+        - function: "dummyTest"
+        - post:
+            url: "/rides"
+            json:
+                start_lat: "{{ start_lat }}"
+                start_long: "{{ start_long }}"
+                end_lat: "{{ end_lat }}"
+                end_long: "{{ end_long }}"
+                rider_name: "{{ rider_name }}"
+                driver_name: "{{ driver_name }}"
+                driver_vehicle: "{{ driver_vehicle }}"
+            capture:
+                json: "$[0].rideID"
+                as: "id"
+            expect:
+                - statusCode: 201                      
+        - get:
+            url: "/rides/{{ id }}"
+            expect:
+                - statusCode: 200
+        - get:
+                url: "/rides?page=1&limit=5"
+                expect:
+                    - statusCode: 200
