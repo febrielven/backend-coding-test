@@ -30,6 +30,7 @@ This API uses sqlite as database. DATABASE storage in: memory. The schema databa
     - Run `npm run lint` 
     - Run `npm test`
     - Run `npm run coverage`
+    - Run `npm run test:load`
 
 2. Pre-push test: Using pre-push to test & check all the code before pushing into remote. 
     - run `git commit -m ""`
