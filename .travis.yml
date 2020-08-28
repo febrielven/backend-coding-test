@@ -11,7 +11,4 @@ install:
     - npm install eslint -g      
 script: 
     - npm start
-after_script:
-    - npm run lint
-    - npm run test
-    - npm run coverage
+

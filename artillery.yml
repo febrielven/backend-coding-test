@@ -33,4 +33,12 @@ scenarios:
         - get:
             url: "/rides/{{ id }}"
             expect:
+<<<<<<< HEAD
                 - statusCode: 200
+=======
+                - statusCode: 200
+        - get:
+                url: "/rides?page=1&limit=5"
+                expect:
+                    - statusCode: 200
+>>>>>>> master
