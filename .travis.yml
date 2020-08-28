@@ -11,10 +11,8 @@ install:
     - npm install eslint -g      
 script: 
     - npm start
-    - APP_PID=$! 
 after_script:
     - npm run lint
     - npm run test
     - npm run coverage
     - npm run test:load
-    - kill $APP_PID
