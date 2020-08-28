@@ -16,11 +16,8 @@ install:
     - npm install sqlite3
     - npm install eslint -g      
 script: 
-    - npm start
-after_script:
     - npm test
     - npm run lint
     - npm run test
     - npm run coverage
-    - npm run test:load
 
