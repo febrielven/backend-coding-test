@@ -57,15 +57,15 @@ paths:
               examples:
                 example-1:
                   value:
-                    - rideID: 1
-                      startLat: 1
-                      startLong: 1
-                      endLat: 90
-                      endLong: 180
-                      riderName: FEBRI
-                      driverName: Acuy
-                      driverVehicle: Yaris
-                      created: '2020-08-19 03:22:14'
+                    - rideID: 0
+                      startLat: 0
+                      startLong: 0
+                      endLat: 0
+                      endLong: 0
+                      riderName: string
+                      driverName: string
+                      driverVehicle: string
+                      created: string
       requestBody:
         content:
           application/json:
@@ -101,14 +101,8 @@ paths:
                 - driver_vehicle
             examples:
               example-1:
-                value:
-                  start_lat: 1
-                  end_lat: 90
-                  start_long: 1
-                  end_long: 180
-                  rider_name: FEBRIANTO
-                  driver_name: Acuy
-                  driver_vehicle: Yaris
+                value: {}
+      description: test
 components:
   schemas: {}
   securitySchemes: {}
