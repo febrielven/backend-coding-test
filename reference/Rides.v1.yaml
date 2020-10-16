@@ -6,16 +6,66 @@ servers:
   - url: 'http://localhost:3000'
 paths:
   /rides:
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses: {}
-      operationId: get-rides
-      description: ''
     post:
       summary: ''
       operationId: post-rides
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                items:
+                  type: object
+                  required:
+                    - rideID
+                    - startLat
+                    - startLong
+                    - endLat
+                    - endLong
+                    - riderName
+                    - driverName
+                    - driverVehicle
+                    - created
+                  properties:
+                    rideID:
+                      type: number
+                    startLat:
+                      type: number
+                    startLong:
+                      type: number
+                    endLat:
+                      type: number
+                    endLong:
+                      type: number
+                    riderName:
+                      type: string
+                      minLength: 1
+                    driverName:
+                      type: string
+                      minLength: 1
+                    driverVehicle:
+                      type: string
+                      minLength: 1
+                    created:
+                      type: string
+                      minLength: 1
+              examples:
+                example-1:
+                  value:
+                    - rideID: 1
+                      startLat: 1
+                      startLong: 1
+                      endLat: 90
+                      endLong: 180
+                      riderName: FEBRI
+                      driverName: Acuy
+                      driverVehicle: Yaris
+                      created: '2020-08-19 03:22:14'
       requestBody:
         content:
           application/json:
@@ -51,7 +101,14 @@ paths:
                 - driver_vehicle
             examples:
               example-1:
-                value: {}
+                value:
+                  start_lat: 1
+                  end_lat: 90
+                  start_long: 1
+                  end_long: 180
+                  rider_name: FEBRIANTO
+                  driver_name: Acuy
+                  driver_vehicle: Yaris
 components:
   schemas: {}
   securitySchemes: {}
