@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: Rides
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /rides:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-rides
+      description: ''
+    post:
+      summary: ''
+      operationId: post-rides
+      responses: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: ''
+              type: object
+              properties:
+                start_lat:
+                  type: number
+                  exclusiveMinimum: true
+                end_lat:
+                  type: number
+                start_long:
+                  type: number
+                end_long:
+                  type: number
+                rider_name:
+                  type: string
+                  minLength: 1
+                driver_name:
+                  type: string
+                  minLength: 1
+                driver_vehicle:
+                  type: string
+                  minLength: 1
+              required:
+                - start_lat
+                - end_lat
+                - start_long
+                - end_long
+                - rider_name
+                - driver_name
+                - driver_vehicle
+            examples:
+              example-1:
+                value: {}
+components:
+  schemas: {}
+  securitySchemes: {}
